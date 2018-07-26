@@ -1,0 +1,69 @@
+
+<link href="https://ssl.gstatic.com/docs/script/css/add-ons.css"
+      rel="stylesheet">
+
+<!-- The sidebar will have a input box and the search button -->
+<div class="sidebar">
+
+    <!-- The search box for Google Maps -->
+    <div class="block form-group">
+        <input type="text" id="search" placeholder="Enter address.. " />
+        <button class="blue" id="load_maps">Search Google Maps</button>
+    </div>
+
+    <!-- The container for the Google Maps static image -->
+    <div id='maps'></div>
+
+    <div class="block form-group">
+        <button class="blue" id="get_summary">Summaries</button>
+    </div>
+
+    <div id='test'>
+
+
+
+    </div>
+
+
+</div>
+
+<!-- Load the jQuery library from the Google CDN -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
+</script>
+
+<script>
+    // Attach click handlers after the Sidebar has loaded in Google Docs
+    $(function() {
+        // TODO Somehow insert html loop function. Or find another way to generate html. Possibly reload sidebar
+        $('get_summary').click(function() {
+            Logger.log("summaries!")
+            var data = getSummary();
+            for (var i = 0; i < data.length; i++) {
+                $('#test').append('<p>' + data[0] + '</p>');
+            }
+        }
+
+
+        // Use Static Maps to generate an image of the address entered by the user
+        $('#load_maps').click(function() {
+            var mapURL = 'https://maps.googleapis.com/maps/api/staticmap?center='
+                +  encodeURIComponent($('#search').val())
+                +  '&zoom=14&size=200x400&sensor=false';
+            $('#maps').html('<img src=" ' + mapURL + ' "/>');
+        });
+
+        // If the user presses the Enter key in the search box, perform a search
+        $('#search').keyup(function(e) {
+            if (e.keyCode === 13) {
+                $('#load_maps').click();
+            }
+        });
+
+        // When a user clicks the thumbnail image in the sidebar, call
+        // insertGoogleMap to insert the maps image in the current document
+        $('#maps').click(function() {
+            google.script.run.insertGoogleMap($('#search').val());
+        });
+
+    });
+</script>
