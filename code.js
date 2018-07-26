@@ -19,6 +19,12 @@ function showSidebar() {
     DocumentApp.getUi().showSidebar(html);
 }
 
+function displaySummary(){
+    var html = HtmlService.createHtmlOutputFromFile('summary.html')
+        .setTitle("Summaries");
+    DocumentApp.getUi().showSidebar(html);
+}
+
 /* This Google Script function does all the magic. */
 function insertGoogleMap(e) {
     if(e == null){
@@ -54,4 +60,14 @@ function getSummary(){
     var data = JSON.parse(json);
     return data
 
+}
+
+function testCode() {
+    Logger.log(HtmlService
+        .createTemplateFromFile('googlemaps')
+        .getCode());
+}
+
+function getTest() {
+    return 'Hello'
 }

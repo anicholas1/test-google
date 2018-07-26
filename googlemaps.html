@@ -10,19 +10,11 @@
     <!-- The container for the Google Maps static image -->
     <div id='maps'></div>
 
-    <div class="block form-group">
-        <button id="get_summary" class="blue ">Research</button>
+    <div>
+        <button id="get_summary">Summaries</button>
     </div>
 
     <div id='test'>
-        <table>
-            <tr>
-                <? var data = getSummary(); ?>
-                <? for (var i = 0; i < data.length; i++) { ?>
-                <td> <?= data[i].name ?> </td>
-                <? } ?>
-            </tr>
-        </table>
     </div>
 
 
@@ -36,10 +28,9 @@
 <script>
     // Attach click handlers after the Sidebar has loaded in Google Docs
     $(function() {
-        // TODO Somehow insert html loop function. Or find another way to generate html. Possibly reload sidebar
+
         // $('#get_summary').on('click', function() {
         //     var data = google.script.run.getSummary();
-        //     Logger.log("GET SUMMARY!!!!');
         //         for (var i = 0; i < data.length; i++) {
         //         var txt = document.createElement("p");    // Create with DOM
         //         txt.innerHTML = data[i].name;
@@ -48,9 +39,9 @@
         //     }
         // });
 
-        $('#get_summary').on('click', function() {
-            google.script.run.showSidebar(summary=true);
 
+        $('#get_summary').on('click', function() {
+            google.script.run.withSuccessHandler(insertSummary).getSummary();
         });
 
 
@@ -77,4 +68,13 @@
         });
 
     });
+
+    function insertSummary(data){
+        for (var i = 0; i < data.length; i++) {
+            var txt = document.createElement("p");    // Create with DOM
+            txt.innerHTML = data[i].name;
+            $('#test').append(txt);
+            // $('#test').text(data);
+        }}
+
 </script>
