@@ -7,15 +7,15 @@ function onInstall() {
 function onOpen() {
     DocumentApp.getUi()
         .createAddonMenu() // Add a new option in the Google Docs Add-ons Menu
-        .addItem("Google Maps", "showSidebar")
+        .addItem("Summary", "showSidebar")
         .addToUi();  // Run the showSidebar function when someone clicks the menu
 }
 
 /* Show a 300px sidebar with the HTML from googlemaps.html */
 function showSidebar() {
-    var html = HtmlService.createTemplateFromFile("googlemaps")
+    var html = HtmlService.createTemplateFromFile("home")
         .evaluate()
-        .setTitle("Google Maps - Search"); // The title shows in the sidebar
+        .setTitle("Research For Me"); // The title shows in the sidebar
     DocumentApp.getUi().showSidebar(html);
 }
 
@@ -26,39 +26,31 @@ function displaySummary(){
 }
 
 /* This Google Script function does all the magic. */
-function insertGoogleMap(e) {
-    if(e == null){
-        e = '7440 Breckenridge Plano Tx'
-    }
-    var map = Maps.newStaticMap()
-        .setSize(800, 600) // Insert a Google Map 800x600 px
-        .setZoom(15)
-        .setCenter(e); // e contains the address entered by the user
-
-    // Find the location of the cursor in the document
-    cursor = DocumentApp.getActiveDocument().getCursor()
-    if (cursor) {
-        cursor.insertInlineImage(map.getBlob()); // insert the image at the cursor
-    } else {
-        DocumentApp.getUi().alert('Cannot find a cursor.');
-    }
-}
 
 function getSummary(){
     var body = DocumentApp.getActiveDocument().getBody();
     // Use editAsText to obtain a single text element containing
     // all the characters in the document.
-    var text = body.editAsText();
+    var text = body.editAsText().getText();
 
+
+    var test_text = "trump tariffs china";
     var options = {
-        'method' : 'get',
-        'contentType': 'appliaction/json',
-        //'payload' : {'articles': text}
+        "method" : "post",
+        "contentType": "application/json",
+        "payload" : JSON.stringify({"text": text}),
+        "headers" : {"Accept" : "application/json"},
+        "muteHttpExceptions" : true
     };
-    var response = UrlFetchApp.fetch("https://jsonplaceholder.typicode.com/users", options);
+    // var response = UrlFetchApp.fetch("https://jsonplaceholder.typicode.com/users", options);
+    var response = UrlFetchApp.fetch("http://18.207.157.28:10000/summary/search/", options);
+    // Logger.log(response.getContentText())
+
     var json = response.getContentText();
     var data = JSON.parse(json);
-    return data
+    Logger.log(data.articles)
+
+    return data.articles
 
 }
 
