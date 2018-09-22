@@ -11,7 +11,7 @@ function onOpen() {
         .addToUi();  // Run the showSidebar function when someone clicks the menu
 }
 
-/* Show a 300px sidebar with the HTML from googlemaps.html */
+/* Show a 300px sidebar with the HTML from home.html */
 function showSidebar() {
     var html = HtmlService.createTemplateFromFile("home")
         .evaluate()
@@ -20,7 +20,7 @@ function showSidebar() {
 }
 
 function displaySummary(){
-    var html = HtmlService.createHtmlOutputFromFile('summary.html')
+    const html = HtmlService.createHtmlOutputFromFile('summary.html')
         .setTitle("Summaries");
     DocumentApp.getUi().showSidebar(html);
 }
@@ -28,14 +28,14 @@ function displaySummary(){
 /* This Google Script function does all the magic. */
 
 function getSummary(){
-    var body = DocumentApp.getActiveDocument().getBody();
+    const body = DocumentApp.getActiveDocument().getBody();
     // Use editAsText to obtain a single text element containing
     // all the characters in the document.
-    var text = body.editAsText().getText();
+    const text = body.editAsText().getText();
 
 
-    var test_text = "trump tariffs china";
-    var options = {
+    const test_text = "trump tariffs china";
+    const options = {
         "method" : "post",
         "contentType": "application/json",
         "payload" : JSON.stringify({"text": text}),
@@ -43,16 +43,54 @@ function getSummary(){
         "muteHttpExceptions" : true
     };
     // var response = UrlFetchApp.fetch("https://jsonplaceholder.typicode.com/users", options);
-    var response = UrlFetchApp.fetch("http://18.207.157.28:10000/summary/search/", options);
+    const response = UrlFetchApp.fetch("http://52.91.163.221:10000/summary/search/", options);
     // Logger.log(response.getContentText())
 
-    var json = response.getContentText();
-    var data = JSON.parse(json);
+    const json = response.getContentText();
+    const data = JSON.parse(json);
     Logger.log(data.articles)
 
     return data.articles
 
 }
+
+// TODO
+// Send text to amazon api for search results.
+// Convert fact sentences into javascript object. Index the words.
+// Create html paragraph for sentences. Add span tag at index range
+// With fact sentences and index of words, bold the words near the indexes with html.
+
+// var bold_span = "<span style="font-weight:900">Andy Warhol</span>"
+
+function getStory(){
+    const body = DocumentApp.getActiveDocument().getBody();
+    // Use editAsText to obtain a single text element containing
+    // all the characters in the document.
+    const text = body.editAsText().getText();
+
+
+    const test_text = "trump tariffs china";
+    const options = {
+        "method" : "post",
+        "contentType": "application/json",
+        "payload" : JSON.stringify({"text": text}),
+        "headers" : {"Accept" : "application/json"},
+        "muteHttpExceptions" : true
+    };
+    // var response = UrlFetchApp.fetch("https://jsonplaceholder.typicode.com/users", options);
+    const response = UrlFetchApp.fetch("http://52.91.163.221:10000/api/facts/", options);
+    // Logger.log(response.getContentText())
+
+    const json = response.getContentText();
+    const data = JSON.parse(json);
+    Logger.log(data.articles)
+
+    return data.html
+
+}
+
+
+
 
 function testCode() {
     Logger.log(HtmlService
