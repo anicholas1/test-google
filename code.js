@@ -68,24 +68,19 @@ function getStory(){
     // all the characters in the document.
     const text = body.editAsText().getText();
 
-
-    const test_text = "trump tariffs china";
     const options = {
-        "method" : "post",
+        "method" : "get", // change back to post
         "contentType": "application/json",
         "payload" : JSON.stringify({"text": text}),
         "headers" : {"Accept" : "application/json"},
         "muteHttpExceptions" : true
     };
-    // var response = UrlFetchApp.fetch("https://jsonplaceholder.typicode.com/users", options);
-    const response = UrlFetchApp.fetch("http://52.91.163.221:10000/api/facts/", options);
+    const response = UrlFetchApp.fetch("https://jsonplaceholder.typicode.com/users", options); // TODO Change back url
     // Logger.log(response.getContentText())
-
     const json = response.getContentText();
     const data = JSON.parse(json);
-    Logger.log(data.articles)
 
-    return data.html
+    return data
 
 }
 

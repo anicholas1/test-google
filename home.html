@@ -17,14 +17,15 @@
     <div id='summary'>
     </div>
 
+    <br>
+    <br>
+
     <div>
         <button id="get_story">Story</button>
     </div>
 
     <div id='story'>
     </div>
-
-
 
 </div>
 
@@ -51,8 +52,8 @@
             google.script.run.withSuccessHandler(insertSummary).getSummary();
         });
 
-        $('#get_facts').on('click', function() {
-            google.script.run.withSuccessHandler(insertStory).getFacts();
+        $('#get_story').on('click', function() {
+            google.script.run.withSuccessHandler(insertStory).getStory();
         });
 
 
@@ -89,9 +90,10 @@
             $('#summary').append(txt);
             // $('#summary').text(data);
         }}
-
+    // Insert div tag with html of facts
     function insertStory(data){
-            $('#story').append(data);
-        }
+        var test_data = "<p> Hello I am a <strong>fact<\strong><\p>"
+        $('#story').append(test_data)
+    }
 
 </script>
