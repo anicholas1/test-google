@@ -92,8 +92,10 @@
         }}
     // Insert div tag with html of facts
     function insertStory(data){
-        var test_data = "<p> Hello I am a <strong>fact<\strong><\p>"
-        $('#story').append(test_data)
+        for (var i = 0; i < data.length; i++) {
+            $('#story').append(data[i])
+            $('#story').append("<br>")
+        }
     }
 
 </script>
