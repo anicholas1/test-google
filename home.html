@@ -82,7 +82,6 @@
     });
 
     // Success Handler inserts html once summary api call has succeded
-    // TODO Need to reproduce for fact sentences
     function insertSummary(data){
         for (var i = 0; i < data.length; i++) {
             var txt = document.createElement("p");    // Create with DOM
@@ -93,8 +92,7 @@
     // Insert div tag with html of facts
     function insertStory(data){
         for (var i = 0; i < data.length; i++) {
-            $('#story').append(data[i])
-            $('#story').append("<br>")
+            $('#story').append(data[i] + "<br>");
         }
     }
 

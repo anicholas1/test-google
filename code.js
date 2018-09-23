@@ -13,7 +13,7 @@ function onOpen() {
 
 /* Show a 300px sidebar with the HTML from home.html */
 function showSidebar() {
-    var html = HtmlService.createTemplateFromFile("home")
+    const html = HtmlService.createTemplateFromFile("home")
         .evaluate()
         .setTitle("Research For Me"); // The title shows in the sidebar
     DocumentApp.getUi().showSidebar(html);
@@ -25,8 +25,7 @@ function displaySummary(){
     DocumentApp.getUi().showSidebar(html);
 }
 
-/* This Google Script function does all the magic. */
-
+/* Get summary fetches articles and summarise from api, and returns to handler function in home.html */
 function getSummary(){
     const body = DocumentApp.getActiveDocument().getBody();
     // Use editAsText to obtain a single text element containing
@@ -42,26 +41,19 @@ function getSummary(){
         "headers" : {"Accept" : "application/json"},
         "muteHttpExceptions" : true
     };
-    // var response = UrlFetchApp.fetch("https://jsonplaceholder.typicode.com/users", options);
-    const response = UrlFetchApp.fetch("http://52.91.163.221:10000/summary/search/", options);
-    // Logger.log(response.getContentText())
-
+    const response = UrlFetchApp.fetch("http://18.207.157.28:10000/summary/search/", options);
     const json = response.getContentText();
     const data = JSON.parse(json);
-    Logger.log(data.articles)
+    Logger.log(data.articles);
 
     return data.articles
 
 }
 
-// TODO
 // Send text to amazon api for search results.
 // Convert fact sentences into javascript object. Index the words.
 // Create html paragraph for sentences. Add span tag at index range
 // With fact sentences and index of words, bold the words near the indexes with html.
-
-// var bold_span = "<span style="font-weight:900">Andy Warhol</span>"
-
 function getStory(){
     const body = DocumentApp.getActiveDocument().getBody();
     // Use editAsText to obtain a single text element containing
@@ -69,18 +61,18 @@ function getStory(){
     const text = body.editAsText().getText();
 
     const options = {
-        "method" : "get", // change back to post
+        "method" : "post",
         "contentType": "application/json",
         "payload" : JSON.stringify({"text": text}),
         "headers" : {"Accept" : "application/json"},
         "muteHttpExceptions" : true
     };
-    const response = UrlFetchApp.fetch("https://jsonplaceholder.typicode.com/users", options); // TODO Change back url
+    const response = UrlFetchApp.fetch("http://54.204.154.15:10010/api/facts", options);
     // Logger.log(response.getContentText())
     const json = response.getContentText();
     const data = JSON.parse(json);
 
-    return data
+    return data.html
 
 }
 
