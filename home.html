@@ -37,47 +37,14 @@
     // Attach click handlers after the Sidebar has loaded in Google Docs
     $(function() {
 
-        // $('#get_summary').on('click', function() {
-        //     var data = google.script.run.getSummary();
-        //         for (var i = 0; i < data.length; i++) {
-        //         var txt = document.createElement("p");    // Create with DOM
-        //         txt.innerHTML = data[i].name;
-        //         $('#test').append(txt);
-        //
-        //     }
-        // });
-
-
         $('#get_summary').on('click', function() {
+            google.script.run.withSuccessHandler(wait).showSidebar();
             google.script.run.withSuccessHandler(insertSummary).getSummary();
         });
 
         $('#get_story').on('click', function() {
             google.script.run.withSuccessHandler(insertStory).getStory();
         });
-
-
-        // // Use Static Maps to generate an image of the address entered by the user
-        // $('#load_maps').click(function() {
-        //     var mapURL = 'https://maps.googleapis.com/maps/api/staticmap?center='
-        //         +  encodeURIComponent($('#search').val())
-        //         +  '&zoom=14&size=200x400&sensor=false';
-        //     var data = google.script.run.getSummary();
-        //     $('#maps').html(data[0].name );
-        // });
-        //
-        // // If the user presses the Enter key in the search box, perform a search
-        // $('#search').keyup(function(e) {
-        //     if (e.keyCode === 13) {
-        //         $('#load_maps').click();
-        //     }
-        // });
-        //
-        // // When a user clicks the thumbnail image in the sidebar, call
-        // // insertGoogleMap to insert the maps image in the current document
-        // $('#maps').click(function() {
-        //     google.script.run.insertGoogleMap($('#search').val());
-        // });
 
     });
 
@@ -94,6 +61,10 @@
         for (var i = 0; i < data.length; i++) {
             $('#story').append(data[i] + "<br>");
         }
+    }
+
+    function wait(){
+        return ""
     }
 
 </script>
